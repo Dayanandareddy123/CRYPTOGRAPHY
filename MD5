@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+
+typedef struct {
+    uint32_t state[4];
+} MD5_CTX;
+
+void md5_init(MD5_CTX *ctx);
+void md5_update(MD5_CTX *ctx, const unsigned char *input,  size_t input_len);
+void md5_final(MD5_CTX *ctx, unsigned char *digest);
+
+int main() {
+    MD5_CTX context;
+    unsigned char digest[16];
+    const char *input = "Hello, MD5!";
+    size_t  input_len = strlen(input);
+
+
+
+    md5_init(&context);
+    md5_update(&context, (const unsigned char *)input, input_len);
+    md5_final(&context, digest);
+
+    printf("MD5 Hash: ");
+    for (int i = 0; i < 16; i++) {
+        printf("%02x", digest[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+void md5_init(MD5_CTX *ctx) {
+    ctx->state[0] = 0x67452301;
+    ctx->state[1] = 0xEFCDAB89;
+    ctx->state[2] = 0x98BADCFE;
+    ctx->state[3] = 0x10325476;
+}
+
+void md5_update(MD5_CTX *ctx, const unsigned char *input, size_t input_len) {
+
+}
+
+void md5_final(MD5_CTX *ctx, unsigned char *digest) {
+   
+}
