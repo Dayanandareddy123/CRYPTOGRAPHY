@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 3
+void matrixMultiply(int key[SIZE][SIZE], int input[SIZE], int result[SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        result[i] = 0;
+        for (int j = 0; j < SIZE; j++) {
+            result[i] += key[i][j] * input[j];
+        }
+        result[i] %= 26;
+    }
+}
+
+int main() {
+    int key[SIZE][SIZE];
+    int input[SIZE];
+    int result[SIZE];
+
+    printf("Enter the key matrix (3x3):\n");
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            scanf("%d", &key[i][j]);
+        }
+    }
+
+    printf("Enter the input vector (3 values):\n");
+    for (int i = 0; i < SIZE; i++) {
+        scanf("%d", &input[i]);
+    }
+    matrixMultiply(key, input, result);
+
+    printf("Encrypted vector: ");
+    for (int i = 0; i < SIZE; i++) {
+        printf("%c", 'A' + result[i]);
+    }
+    printf("\n");
+
+    return 0;
+}
