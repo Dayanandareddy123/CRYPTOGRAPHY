@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to perform Caesar cipher encryption
+void caesarCipherEncrypt(char text[], int shift) {
+    int length = strlen(text);
+    
+    for (int i = 0; i < length; i++) {
+        if (text[i] >= 'a' && text[i] <= 'z') {
+            text[i] = (text[i] - 'a' + shift) % 26 + 'a';
+        } else if (text[i] >= 'A' && text[i] <= 'Z') {
+            text[i] = (text[i] - 'A' + shift) % 26 + 'A';
+        }
+    }
+}
+
+// Function to perform Caesar cipher decryption
+void caesarCipherDecrypt(char text[], int shift) {
+    caesarCipherEncrypt(text, 26 - shift); // Decryption is the reverse of encryption
+}
+
+int main() {
+    char text[100];
+    int shift;
+
+    printf("Enter a message: ");
+    fgets(text, sizeof(text), stdin);
+
+    printf("Enter the shift value: ");
+    scanf("%d", &shift);
+
+    // Encrypt the message
+    caesarCipherEncrypt(text, shift);
+    printf("Encrypted message: %s\n", text);
+
+    // Decrypt the message
+    caesarCipherDecrypt(text, shift);
+    printf("Decrypted message: %s\n", text);
+
+    return 0;
+}
