@@ -1,0 +1,44 @@
+#include <stdio.h>
+unsigned long long modExp(unsigned long long base, unsigned long long exponent, unsigned long long mod) {
+    unsigned long long result = 1;
+    base = base % mod;
+    
+    while (exponent > 0) {
+        if (exponent % 2 == 1) {
+            result = (result * base) % mod;
+        }
+        exponent = exponent >> 1;
+        base = (base * base) % mod;
+    }
+    
+    return result;
+}
+unsigned long long rsaEncrypt(unsigned long long plaintext, unsigned long long e, unsigned long long n) {
+    return modExp(plaintext, e, n);
+}
+unsigned long long rsaDecrypt(unsigned long long ciphertext, unsigned long long d, unsigned long long n) {
+    return modExp(ciphertext, d, n);
+}
+
+int main() {
+    unsigned long long p = 61;
+    unsigned long long q = 53;
+    unsigned long long n = p * q;
+    unsigned long long phi_n = (p - 1) * (q - 1);
+    unsigned long long e = 17;
+    unsigned long long d;
+    for (d = 2; d < phi_n; d++) {
+        if ((e * d) % phi_n == 1) {
+            break;
+        }
+    }
+    unsigned long long plaintext = 88;
+    unsigned long long ciphertext = rsaEncrypt(plaintext, e, n);
+    unsigned long long decrypted = rsaDecrypt(ciphertext, d, n);
+
+    printf("Plaintext: %llu\n", plaintext);
+    printf("Ciphertext: %llu\n", ciphertext);
+    printf("Decrypted: %llu\n", decrypted);
+
+    return 0;
+}
