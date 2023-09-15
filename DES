@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdint.h>
+void initialPermutation(uint64_t *block) {    
+}
+void finalPermutation(uint64_t *block) {    
+}
+uint32_t feistelFunction(uint32_t right, uint64_t subKey) {    
+}
+void generateSubKeys(uint64_t mainKey, uint64_t subKeys[16]) {
+    
+}
+void desEncrypt(uint64_t *plainBlock, uint64_t *cipherBlock, uint64_t *subKeys) {   
+}
+
+int main() {
+    uint64_t plainBlock = 0x0123456789ABCDEF; 
+    uint64_t key = 0x133457799BBCDFF1; 
+    uint64_t subKeys[16];
+    generateSubKeys(key, subKeys);
+    uint64_t cipherBlock;
+    desEncrypt(&plainBlock, &cipherBlock, subKeys);
+
+    printf("Plaintext: %016llX\n", plainBlock);
+    printf("Ciphertext: %016llX\n", cipherBlock);
+
+    return 0;
+}
