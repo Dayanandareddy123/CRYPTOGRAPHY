@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <string.h>
+
+#define SIZE 5
+void generateKeyTable(const char *key, char keyTable[SIZE][SIZE]) {
+    int i, j, k = 0;
+    int used[26] = {0};
+
+    for (i = 0; i < SIZE; i++) {
+        for (j = 0; j < SIZE; j++) {
+            if (k < strlen(key)) {
+                if (!used[key[k] - 'A']) {
+                    keyTable[i][j] = key[k];
+                    used[key[k] - 'A'] = 1;
+                } else {
+                    j--;
+                }
+                k++;
+            } else {
+                for (k = 0; k < 26; k++) {
+                    if (!used[k]) {
+                        keyTable[i][j] = 'A' + k;
+                        used[k] = 1;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+void encrypt(const char *input, char keyTable[SIZE][SIZE]) {
+    int i, j, row1, row2, col1, col2;
+    char encryptedText[strlen(input)];
+
+    for (i = 0; i < strlen(input); i += 2) {
+        for (j = 0; j < SIZE; j++) {
+            if (keyTable[j][0] == input[i])
+                row1 = j, col1 = 0;
+            if (keyTable[j][0] == input[i + 1])
+                row2 = j, col2 = 0;
+            for (int k = 1; k < SIZE; k++) {
+                if (keyTable[j][k] == input[i])
+                    row1 = j, col1 = k;
+                if (keyTable[j][k] == input[i + 1])
+                    row2 = j, col2 = k;
+            }
+        }
+        if (row1 == row2) {
+            encryptedText[i] = keyTable[row1][(col1 + 1) % SIZE];
+            encryptedText[i + 1] = keyTable[row2][(col2 + 1) % SIZE];
+        } else if (col1 == col2) {
+            encryptedText[i] = keyTable[(row1 + 1) % SIZE][col1];
+            encryptedText[i + 1] = keyTable[(row2 + 1) % SIZE][col2];
+        } else {
+            encryptedText[i] = keyTable[row1][col2];
+            encryptedText[i + 1] = keyTable[row2][col1];
+        }
+    }
+
+    encryptedText[i] = '\0';
+
+    printf("Encrypted Text: %s\n", encryptedText);
+}
+
+int main() {
+    char key[25];
+    char keyTable[SIZE][SIZE];
+
+    printf("Enter the key (without spaces and all uppercase): ");
+    scanf("%s", key);
+    int len = strlen(key);
+    for (int i = 0; i < len; i++) {
+        for (int j = i + 1; j < len; j++) {
+            if (key[i] == key[j]) {
+                for (int k = j; k < len; k++)
+                    key[k] = key[k + 1];
+                len--;
+                j--;
+            }
+        }
+    }
+
+    generateKeyTable(key, keyTable);
+
+    char input[100];
+    printf("Enter the text to encrypt: ");
+    scanf("%s", input);
+
+    encrypt(input, keyTable);
+
+    return 0;
+}
